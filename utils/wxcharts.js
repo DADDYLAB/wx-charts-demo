@@ -19,7 +19,7 @@ var config = {
     padding: 12,
     columePadding: 3,
     fontSize: 10,
-    dataPointShape: ['diamond', 'circle', 'triangle', 'rect'],
+    dataPointShape: ['circle', 'diamond', 'n_circle', 'triangle', 'rect'],
     colors: ['#7cb5ec', '#f7a35c', '#434348', '#90ed7d', '#f15c80', '#8085e9'],
     pieChartLinePadding: 25,
     pieChartTextPadding: 15,
@@ -743,6 +743,16 @@ function drawPointShape(points, color, shape, context) {
                 context.arc(item.x, item.y, 4, 0, 2 * Math.PI, false);
             }
         });
+    } else if (shape === 'n_circle'){
+         points.forEach(function (item, index) {
+            if (item !== null) {
+                context.setStrokeStyle(color);
+                context.setLineWidth(2);
+                context.setFillStyle("#fff");
+                context.moveTo(item.x + 3.5, item.y);
+                context.arc(item.x, item.y, 3, 0, 2 * Math.PI, false);
+            }
+        });
     } else if (shape === 'rect') {
         points.forEach(function (item, index) {
             if (item !== null) {
@@ -1251,8 +1261,15 @@ function drawLineDataPoints(series, opts, config, context) {
         });
 
         if (opts.dataPointShape !== false) {
-            var shape = config.dataPointShape[seriesIndex % config.dataPointShape.length];
+          if (eachSeries.dataPointShape !== false) {
+            var shape = ''
+            if (eachSeries.pointShape !== false) {
+              shape = eachSeries.pointShape
+            } else {
+              shape = config.dataPointShape[seriesIndex % config.dataPointShape.length];
+            }
             drawPointShape(points, eachSeries.color, shape, context);
+          }
         }
     });
     if (opts.dataLabel !== false && process === 1) {
@@ -1378,7 +1395,7 @@ function drawYAxisGrid(opts, config, context) {
 
     context.beginPath();
     context.setStrokeStyle(opts.yAxis.gridColor || "#cccccc");
-    context.setLineWidth(1);
+    context.setLineWidth(0.5);
     points.forEach(function (item, index) {
         context.moveTo(startX, item);
         context.lineTo(endX, item);
