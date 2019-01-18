@@ -12,11 +12,6 @@ Page({
   },
   touchEndHandler: function(e) {
     lineChart.scrollEnd(e);
-    lineChart.showToolTip(e, {
-      format: function(item, category) {
-        return category + ' ' + item.name + ':' + item.data
-      }
-    });
   },
   createSimulationData: function() {
     var categories = [];
@@ -36,7 +31,7 @@ Page({
       data2.push(30 + i * (Math.random() * (2 - 1) + 1));
 
       if (i == 3) {
-        data3.push(23);
+        data3.push(0);
       } else if (i == 4) {
         data3.push(25);
       } else if (i == 5) {
@@ -111,5 +106,6 @@ Page({
         lineStyle: 'curve'
       }
     });
+    lineChart.Offset(-300);
   }
 });

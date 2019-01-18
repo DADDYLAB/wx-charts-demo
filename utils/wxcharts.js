@@ -2027,6 +2027,18 @@ Charts.prototype.showToolTip = function (e) {
     }
 };
 
+Charts.prototype.Offset = function (off) {
+  var opts = assign({}, this.opts, {
+    _scrollDistance_: off,
+    animation: false
+  });
+
+  drawCharts.call(this, opts.type, opts, this.config, this.context);
+
+  this.scrollOption.currentOffset = off;
+  this.scrollOption.distance = 0;
+}
+
 Charts.prototype.scrollStart = function (e) {
     if (e.touches[0] && this.opts.enableScroll === true) {
         this.scrollOption.startTouchX = e.touches[0].x;
